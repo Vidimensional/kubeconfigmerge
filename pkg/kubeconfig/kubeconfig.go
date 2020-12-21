@@ -1,6 +1,7 @@
 package kubeconfig
 
 import (
+	"errors"
 	"os"
 
 	"github.com/imdario/mergo"
@@ -9,26 +10,49 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
-func New() *clientcmdapi.Config {
-	return clientcmdapi.NewConfig()
+var ErrKubeconfigNotFound = errors.New("kubeconfig not found")
+
+type funcLoadFromFile func(filename string) (*clientcmdapi.Config, error)
+type funcWriteToFile func(config clientcmdapi.Config, filename string) error
+type funcFileExists func(filename string) bool
+
+type ReadWriter struct {
+	loadFromFile funcLoadFromFile
+	writeToFile  funcWriteToFile
+	fileExists   funcFileExists
 }
 
-func NewFromFile(filename string) (*clientcmdapi.Config, error) {
-	if !fileExists(filename) {
-		return clientcmdapi.NewConfig(), nil
+func NewReadWriter() *ReadWriter {
+	return &ReadWriter{
+		loadFromFile: clientcmd.LoadFromFile,
+		writeToFile:  clientcmd.WriteToFile,
+		fileExists:   fileExists,
+	}
+}
+
+// Read Loads the config from filename and returns a *Config with the contents.
+// If the file is not found on the FileSystem it returns an empty *Config and a ErrKubeconfigNotFound error.
+func (kc *ReadWriter) Read(filename string) (*clientcmdapi.Config, error) {
+	if !kc.fileExists(filename) {
+		return clientcmdapi.NewConfig(), ErrKubeconfigNotFound
 	}
 
-	conf, err := clientcmd.LoadFromFile(filename)
+	conf, err := kc.loadFromFile(filename)
+	if err != nil {
+		return nil, err
+	}
 	conf.SetGroupVersionKind(schema.GroupVersionKind{Version: "v1", Kind: "Config"})
+
 	return conf, err
 }
 
-func Write(config clientcmdapi.Config, filename string) error {
-	return clientcmd.WriteToFile(config, filename)
+// Write saves the content of config to the Filesystem specified by filename in YAML format.
+func (kc *ReadWriter) Write(config clientcmdapi.Config, filename string) error {
+	return kc.writeToFile(config, filename)
 }
 
-func Merge(dst, src *clientcmdapi.Config) {
-	mergo.Merge(dst, src)
+func Merge(dst, src *clientcmdapi.Config) error {
+	return mergo.Merge(dst, src)
 }
 
 func fileExists(filename string) bool {

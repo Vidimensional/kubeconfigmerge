@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/vidimensional/kubeconfigmerge/pkg/cmd"
+	"github.com/vidimensional/kubeconfigmerge/pkg/kubeconfig"
 )
 
 func main() {
-	cmd.Execute()
+	kubeRW := kubeconfig.NewReadWriter()
+	cmd.Execute(kubeRW)
 }

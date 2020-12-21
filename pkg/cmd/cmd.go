@@ -6,7 +6,8 @@ import (
 )
 
 var (
-	kubeconfigPath string
+	kubeconfigPath       string
+	kubeconfigReadWriter *kubeconfig.ReadWriter
 
 	rootCmd = &cobra.Command{
 		Use:                   cmdName() + " [flags] NEW_CONFIG...",
@@ -16,28 +17,6 @@ var (
 		RunE:                  Run,
 	}
 )
-
-func Run(_ *cobra.Command, args []string) error {
-	kc, err := kubeconfig.NewFromFile(kubeconfigPath)
-	if err != nil {
-		return err
-	}
-
-	for _, configPath := range args {
-		config, err := kubeconfig.NewFromFile(configPath)
-		if err != nil {
-			return err
-		}
-		kubeconfig.Merge(kc, config)
-	}
-
-	err = kubeconfig.Write(*kc, kubeconfigPath)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(
@@ -49,7 +28,30 @@ func init() {
 	)
 }
 
+func Run(_ *cobra.Command, args []string) error {
+	kc, err := kubeconfigReadWriter.Read(kubeconfigPath)
+	if err != nil && err != kubeconfig.ErrKubeconfigNotFound {
+		return err
+	}
+
+	for _, configPath := range args {
+		config, err := kubeconfigReadWriter.Read(configPath)
+		if err != nil {
+			return err
+		}
+		kubeconfig.Merge(kc, config)
+	}
+
+	err = kubeconfigReadWriter.Write(*kc, kubeconfigPath)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Execute executes the root command.
-func Execute() error {
+func Execute(kubeRW *kubeconfig.ReadWriter) error {
+	kubeconfigReadWriter = kubeRW
 	return rootCmd.Execute()
 }
