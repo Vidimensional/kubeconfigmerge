@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/viditests/cmdtest/pkg/kubeconfig"
+	"github.com/vidimensional/kubeconfigmerge/pkg/kubeconfig"
 )
 
 var (

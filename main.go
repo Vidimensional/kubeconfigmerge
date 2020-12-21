@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/viditests/cmdtest/pkg/cmd"
+	"github.com/vidimensional/kubeconfigmerge/pkg/cmd"
 )
 
 func main() {
 	cmd.Execute()
-
 }
