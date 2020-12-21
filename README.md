@@ -4,7 +4,7 @@ Merges kubernetes config files to your local kubeconfig.
 
 ```
 Usage:
-main [flags] NEW_CONFIG...
+kubemerge [flags] NEW_CONFIG...
 
 Flags:
 -h, --help                 help for main
