@@ -2,9 +2,9 @@ package kubeconfig
 
 import (
 	"errors"
-	"os"
 
 	"github.com/imdario/mergo"
+	"github.com/vidimensional/kubeconfigmerge/pkg/file"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
@@ -26,7 +26,7 @@ func NewReadWriter() *ReadWriter {
 	return &ReadWriter{
 		loadFromFile: clientcmd.LoadFromFile,
 		writeToFile:  clientcmd.WriteToFile,
-		fileExists:   fileExists,
+		fileExists:   file.Exists,
 	}
 }
 
@@ -53,12 +53,4 @@ func (kc *ReadWriter) Write(config clientcmdapi.Config, filename string) error {
 
 func Merge(dst, src *clientcmdapi.Config) error {
 	return mergo.Merge(dst, src)
-}
-
-func fileExists(filename string) bool {
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return !info.IsDir()
 }

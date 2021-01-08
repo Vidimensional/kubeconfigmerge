@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/vidimensional/kubeconfigmerge/pkg/file"
+
 	"github.com/stretchr/testify/assert"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/clientcmd"
@@ -33,7 +35,7 @@ func TestNewReadWriter(t *testing.T) {
 	}
 	assert.Equal(t, funcPointer(clientcmd.WriteToFile), funcPointer(rw.writeToFile))
 	assert.Equal(t, funcPointer(clientcmd.LoadFromFile), funcPointer(rw.loadFromFile))
-	assert.Equal(t, funcPointer(fileExists), funcPointer(rw.fileExists))
+	assert.Equal(t, funcPointer(file.Exists), funcPointer(rw.fileExists))
 }
 
 func TestReadWhenFileDoesNotExistReturnsEmptyConfigAndErrKubeconfigNotFound(t *testing.T) {
