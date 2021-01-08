@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Config
+current-context: ""
+contexts: null
+clusters: null
+users: null
+preferences: {}
