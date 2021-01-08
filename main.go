@@ -7,5 +7,5 @@ import (
 
 func main() {
 	kubeRW := kubeconfig.NewReadWriter()
-	cmd.Execute(kubeRW)
+	_ = cmd.Execute(kubeRW)
 }

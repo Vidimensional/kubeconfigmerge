@@ -1,0 +1,9 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: test
+    image: vidimensional/drone-gobuild
+    commands:
+      - make check
+      - make test

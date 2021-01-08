@@ -39,7 +39,7 @@ func Run(_ *cobra.Command, args []string) error {
 		if err != nil {
 			return err
 		}
-		kubeconfig.Merge(kc, config)
+		_ = kubeconfig.Merge(kc, config)
 	}
 
 	err = kubeconfigReadWriter.Write(*kc, kubeconfigPath)
