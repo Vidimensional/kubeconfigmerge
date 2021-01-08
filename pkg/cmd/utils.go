@@ -8,11 +8,18 @@ import (
 )
 
 func defaultKubeConfigPath() string {
-	u, err := user.Current()
-	if err != nil {
-		return ""
+	kubeconfig := os.Getenv("KUBECONFIG")
+
+	if kubeconfig == "" {
+		u, err := user.Current()
+		if err != nil {
+			return ""
+		}
+		kubeconfig = fmt.Sprintf("%s/.kube/config", u.HomeDir)
 	}
-	return fmt.Sprintf("%s/.kube/config", u.HomeDir)
+
+	return kubeconfig
+
 }
 
 func cmdName() string {
