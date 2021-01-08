@@ -1,5 +1,7 @@
 # KubeconfigMerge
 
+[![Build Status](https://cloud.drone.io/api/badges/Vidimensional/kubeconfigmerge/status.svg)](https://cloud.drone.io/Vidimensional/kubeconfigmerge)
+
 ## Install
 
 ```shell
