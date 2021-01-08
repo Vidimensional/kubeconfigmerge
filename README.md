@@ -2,6 +2,9 @@
 
 [![Build Status](https://cloud.drone.io/api/badges/Vidimensional/kubeconfigmerge/status.svg)](https://cloud.drone.io/Vidimensional/kubeconfigmerge)
 
+Merges kubernetes config files to your local kubeconfig.
+
+
 ## Install
 
 ```shell
@@ -9,8 +12,6 @@ go get github.com/Vidimensional/kubeconfigmerge
 ```
 
 ## Run
-
-Merges kubernetes config files to your local kubeconfig.
 
 ```
 Usage:

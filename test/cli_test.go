@@ -20,44 +20,44 @@ func TestCliArgs(t *testing.T) {
 	tests := []struct {
 		name           string
 		actualConfig   string
-		newConfig      string
+		mergingConfig  string
 		expectedConfig string
 	}{
 		{
-			"Merge blank config into a blank local config",
-			"blank.yaml",
-			"blank.yaml",
-			"empty.yaml",
+			name:           "Merge blank config into a blank local config",
+			actualConfig:   "blank.yaml",
+			mergingConfig:  "blank.yaml",
+			expectedConfig: "empty.yaml",
 		},
 		{
-			"Merge empty config into a blank local config",
-			"blank.yaml",
-			"empty.yaml",
-			"empty.yaml",
+			name:           "Merge empty config into a blank local config",
+			actualConfig:   "blank.yaml",
+			mergingConfig:  "empty.yaml",
+			expectedConfig: "empty.yaml",
 		},
 		{
-			"Merge dev config into an blank local config",
-			"blank.yaml",
-			"kubeconfig-dev.yaml",
-			"kubeconfig-dev.yaml",
+			name:           "Merge dev config into an blank local config",
+			actualConfig:   "blank.yaml",
+			mergingConfig:  "kubeconfig-dev.yaml",
+			expectedConfig: "kubeconfig-dev.yaml",
 		},
 		{
-			"Merge dev config into an empty local config",
-			"empty.yaml",
-			"kubeconfig-dev.yaml",
-			"kubeconfig-dev.yaml",
+			name:           "Merge dev config into an empty local config",
+			actualConfig:   "empty.yaml",
+			mergingConfig:  "kubeconfig-dev.yaml",
+			expectedConfig: "kubeconfig-dev.yaml",
 		},
 		{
-			"Merge non-empty config into an blank local config",
-			"empty.yaml",
-			"kubeconfig-dev.yaml",
-			"kubeconfig-dev.yaml",
+			name:           "Merge non-empty config into an blank local config",
+			actualConfig:   "empty.yaml",
+			mergingConfig:  "kubeconfig-dev.yaml",
+			expectedConfig: "kubeconfig-dev.yaml",
 		},
 		{
-			"Merge non-empty config into non-empty local config",
-			"kubeconfig-dev.yaml",
-			"kubeconfig-test.yaml",
-			"kubeconfig-dev-test.yaml",
+			name:           "Merge non-empty config into non-empty local config",
+			actualConfig:   "kubeconfig-dev.yaml",
+			mergingConfig:  "kubeconfig-test.yaml",
+			expectedConfig: "kubeconfig-dev-test.yaml",
 		},
 	}
 
@@ -71,11 +71,10 @@ func TestCliArgs(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			if err := copyNewConfig(test.newConfig); err != nil {
+			if err := copyNewConfig(test.mergingConfig); err != nil {
 				t.Fatal(err)
 			}
 
-			//arg := []string{"-k", actualConfigFile, newConfigFile}
 			err := exec.Command(commandName, "-k", localPath+actualConfigFile, localPath+newConfigFile).Run()
 			if err != nil {
 				t.Fatal(err)
