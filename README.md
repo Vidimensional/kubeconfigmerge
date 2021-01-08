@@ -1,5 +1,13 @@
 # KubeconfigMerge
 
+## Install
+
+```shell
+go get github.com/Vidimensional/kubeconfigmerge
+```
+
+## Run
+
 Merges kubernetes config files to your local kubeconfig.
 
 ```
