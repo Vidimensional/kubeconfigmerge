@@ -37,20 +37,14 @@ func TestCliArgs(t *testing.T) {
 			expectedConfig: "empty.yaml",
 		},
 		{
-			name:           "Merge dev config into an blank local config",
-			actualConfig:   "blank.yaml",
-			mergingConfig:  "kubeconfig-dev.yaml",
-			expectedConfig: "kubeconfig-dev.yaml",
-		},
-		{
-			name:           "Merge dev config into an empty local config",
+			name:           "Merge non-empty config into an empty local config",
 			actualConfig:   "empty.yaml",
 			mergingConfig:  "kubeconfig-dev.yaml",
 			expectedConfig: "kubeconfig-dev.yaml",
 		},
 		{
 			name:           "Merge non-empty config into an blank local config",
-			actualConfig:   "empty.yaml",
+			actualConfig:   "blank.yaml",
 			mergingConfig:  "kubeconfig-dev.yaml",
 			expectedConfig: "kubeconfig-dev.yaml",
 		},

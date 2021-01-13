@@ -5,9 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/vidimensional/kubeconfigmerge/pkg/file"
-
 	"github.com/stretchr/testify/assert"
+	"github.com/vidimensional/kubeconfigmerge/pkg/file"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
@@ -24,15 +23,6 @@ var (
 func TestNewReadWriter(t *testing.T) {
 	rw := NewReadWriter()
 
-	if funcPointer(rw.writeToFile) != funcPointer(clientcmd.WriteToFile) {
-		t.Error("rw.writeToFile is not equal to clientcmd.WriteToFile")
-	}
-	if funcPointer(rw.loadFromFile) != funcPointer(clientcmd.LoadFromFile) {
-		t.Error("rw.writeToFile is not equal to clientcmd.WriteToFile")
-	}
-	if funcPointer(rw.loadFromFile) != funcPointer(clientcmd.LoadFromFile) {
-		t.Error("rw.writeToFile is not equal to clientcmd.WriteToFile")
-	}
 	assert.Equal(t, funcPointer(clientcmd.WriteToFile), funcPointer(rw.writeToFile))
 	assert.Equal(t, funcPointer(clientcmd.LoadFromFile), funcPointer(rw.loadFromFile))
 	assert.Equal(t, funcPointer(file.Exists), funcPointer(rw.fileExists))
