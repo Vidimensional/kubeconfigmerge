@@ -4,6 +4,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
@@ -37,7 +38,8 @@ func copyNewConfig(file string) error {
 }
 
 func copyFile(srcFile string, dstFile string) error {
-	src, err := os.Open(testdataPath + srcFile)
+	srcPath := filepath.Join(testdataPath, srcFile)
+	src, err := os.Open(srcPath)
 	if err != nil {
 		return err
 	}
@@ -47,7 +49,8 @@ func copyFile(srcFile string, dstFile string) error {
 		return err
 	}
 
-	dst, err := os.Create(localPath + dstFile)
+	dstPath := filepath.Join(localPath, dstFile)
+	dst, err := os.Create(dstPath)
 	if err != nil {
 		return err
 	}

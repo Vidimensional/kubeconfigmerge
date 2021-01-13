@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"os/user"
 	"path"
+	"path/filepath"
 )
 
 func defaultKubeConfigPath() string {
@@ -15,7 +15,7 @@ func defaultKubeConfigPath() string {
 		if err != nil {
 			return ""
 		}
-		kubeconfig = fmt.Sprintf("%s/.kube/config", u.HomeDir)
+		kubeconfig = filepath.Join(u.HomeDir, ".kube/config")
 	}
 
 	return kubeconfig

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -75,17 +76,20 @@ func TestCliArgs(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			err := exec.Command(commandName, "-k", localPath+actualConfigFile, localPath+newConfigFile).Run()
+			actualConfigPath := filepath.Join(localPath, actualConfigFile)
+			newConfigPath := filepath.Join(localPath, newConfigFile)
+			err := exec.Command(commandName, "-k", actualConfigPath, newConfigPath).Run()
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			expectedConfig, err := unmarshallYamlFile(testdataPath + test.expectedConfig)
+			expectedConfigPath := filepath.Join(testdataPath + test.expectedConfig)
+			expectedConfig, err := unmarshallYamlFile(expectedConfigPath)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			actualConfig, err := unmarshallYamlFile(localPath + actualConfigFile)
+			actualConfig, err := unmarshallYamlFile(actualConfigPath)
 			if err != nil {
 				t.Fatal(err)
 			}
